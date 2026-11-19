@@ -1,0 +1,13 @@
+{
+  "name": "revyops",
+  "owner": { "name": "Ben Reed" },
+  "metadata": { "description": "Claude Code skills from the RevyOps launch." },
+  "plugins": [
+    {
+      "name": "launch-skills",
+      "source": "./",
+      "description": "Nine Claude Code skills for launching a product: create, publish and sell.",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "launch-skills",
+  "version": "1.0.0",
+  "description": "Nine Claude Code skills for launching a product: content ideas, video scripts, video editing, copy, reports, social posting, a GTM starter, Meta ads and AI onboarding.",
+  "author": { "name": "Ben Reed" },
+  "homepage": "https://revyops.com",
+  "license": "MIT"
+}
