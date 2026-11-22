@@ -9,7 +9,7 @@ A skill is a file Claude reads before it does a job. It follows the same method 
 **Claude Code plugin (recommended).** In Claude Code, run:
 
 ```
-/plugin marketplace add revyops/skills
+/plugin marketplace add revyops/founder-launch-skills
 /plugin install launch-skills@revyops
 ```
 
