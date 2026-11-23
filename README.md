@@ -24,7 +24,7 @@ Then ask Claude for the job in plain words ("turn today into post ideas", "edit 
 |---|---|
 | [content-ideas](skills/content-ideas) | Turns your work day into post ideas, each with a hook and the beats. |
 | [video-scripts](skills/video-scripts) | Scripts a long video as one main loop and up to seven small ones, plus a Short from each. |
-| [video-editing](skills/video-editing) | Raw phone clip to a captioned 9:16 Short, with ffmpeg and Whisper. |
+| [video-editing](skills/video-editing) | Raw phone clip to a captioned 9:16 Short, with ffmpeg and Whisper. Optional relight step puts the speaker in a better room with studio light. |
 
 ### Publish
 | Skill | What it does |

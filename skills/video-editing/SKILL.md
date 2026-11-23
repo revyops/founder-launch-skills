@@ -43,6 +43,10 @@ Make a working folder next to the clip, for example `work/<clip-name>/`. Keep ev
 9. **Check** (below). Fix and re-render until it passes.
 10. **Deliver.** Tell the user which file is final. Also write a 720p preview under 30 MB. Never upload or post anything for the user.
 
+## Optional: relight into a better room
+
+When the user wants the "before and after" studio look (a new room and real light on the face), do it as the last step, after the edit is locked. Follow `references/relight.md` and use the two scripts in `scripts/`. It needs an AI relighting tool, which is paid after any free tier, so ask the user first.
+
 ## Cutting rules
 
 - Cut whole thoughts. Never splice a half sentence, and never cut on Whisper's word time alone.
