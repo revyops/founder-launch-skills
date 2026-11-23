@@ -299,3 +299,55 @@ Skip the crop: replace the crop and scale step in the filter graph with `scale=1
 - Words clipped at a cut: the gap was too small. Widen the padding for that edge or move the edge into a longer gap.
 - Whisper missed fillers: they were removed from the text but still sound in the audio. Re-run with the filler prompt and cross-check with `silencedetect` energy before cutting.
 - The crop cuts off the face: change `x` in the crop and check a still.
+
+## 13. More checks
+
+Cover safe box (1080x1920 cover, the words must stay inside the clear area; red is the no-go area):
+
+```bash
+ffmpeg -y -i cover.png -vf "drawbox=x=0:y=0:w=iw:h=340:color=red@0.35:t=fill,\
+drawbox=x=0:y=1500:w=iw:h=420:color=red@0.35:t=fill,\
+drawbox=x=0:y=0:w=110:h=ih:color=red@0.35:t=fill,\
+drawbox=x=970:y=0:w=110:h=ih:color=red@0.35:t=fill" cover_zones.png
+```
+
+Crops of the profile grid (3:4) and feed (4:5) views of a 1080x1920 cover, and a 420 px wide feed-size copy:
+
+```bash
+ffmpeg -y -i cover.png -vf crop=1080:1440:0:240 cover_grid.png
+ffmpeg -y -i cover.png -vf crop=1080:1350:0:285 cover_feed.png
+ffmpeg -y -i cover.png -vf scale=420:-1 cover_420.png
+```
+
+Join gaps on the finished cut (each gap should be about 0.1 to 0.25 s, and none over 0.25 s for lines filmed one at a time):
+
+```bash
+ffmpeg -i cut.mp4 -af silencedetect=noise=-40dB:d=0.08 -f null - 2>&1 | grep -E "silence_(start|end|duration)"
+```
+
+Audio and video must be the same length, or captions drift:
+
+```bash
+ffprobe -v error -select_streams v:0 -show_entries stream=duration -of csv=p=0 final_9x16.mp4
+ffprobe -v error -select_streams a:0 -show_entries stream=duration -of csv=p=0 final_9x16.mp4
+```
+
+Check each camera file before a multi-camera cut. The real frame rate (29.97 and 30 drift apart), size, rotation and length:
+
+```bash
+ffprobe -v error -show_entries stream=codec_type,width,height,r_frame_rate:stream_side_data=rotation:format=duration:format=size -of default=nw=1 file.mov
+```
+
+Hold the last frame 0.4 s and end the audio exactly with the video (holds the last picture, and pads the audio with silence so both end together):
+
+```bash
+ffmpeg -y -i final_9x16.mp4 -vf tpad=stop_mode=clone:stop_duration=0.4 -af apad -shortest -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart final_held.mp4
+```
+
+Only use that last one as part of the single render. Do not re-encode a finished final.
+
+A 540p preview (about 4 MB for a Short) when storage or a page is full:
+
+```bash
+ffmpeg -y -i final_9x16.mp4 -vf scale=540:960 -c:v libx264 -preset medium -crf 30 -c:a aac -b:a 96k -movflags +faststart final_540.mp4
+```
